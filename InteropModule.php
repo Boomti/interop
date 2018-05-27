@@ -15,7 +15,7 @@ class InteropModule extends CWebModule {
 	private $_versionDate = "07/01/2018";
 	private $_keywords = "interop, interoperability, module,opensource,CO,communecter";
 	private $_description = "Un module pour interopérer avec divers base de données";
-	private $_pageTitle = "Interoperability modules & CO Systems";
+	private $_pageTitle = "interop";
 
 	public function getVersion(){return $this->_version;}
 	public function getVersionDate(){return $this->_versionDate;}

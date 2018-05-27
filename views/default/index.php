@@ -2,15 +2,16 @@
 //gettting asstes from parent module repo
 $cssAnsScriptFilesModule = array( 
 	'/js/dataHelpers.js',
+	'/js/interoperability/interoperability.js',
 	
 );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl() );
 
 
 $cssAnsScriptFilesModule = array( 
-	'/js/dataHelpers.js',
-	'/css/md.css',
+	'/js/interop.js',
 );
+HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getModule( Interop::MODULE )->getAssetsUrl() );
 
 
 
@@ -20,7 +21,9 @@ if( $this->layout != "//layouts/empty"){
 	$this->renderPartial($layoutPath.'header',array("page"=>"interop","layoutPath"=>$layoutPath));
 }
 
-echo Yii::app()->getModule()->getAssetsUrl().'/js/interop.js' ;
+var_dump(Yii::app()->params["module"]);
+
+echo Yii::app()->getModule( Interop::MODULE )->assetsUrl.'/js/interop.js' ;
 
 ?>
 
@@ -42,7 +45,7 @@ jQuery(document).ready(function() {
 	$(".btn-directory-type").click(function(){
 		mylog.log('.btn-directory-type', $(this).data("type") );
 		var type = $(this).data("type");
-		interop.startSearch();
+		interop.startSearch(0,30);
 		// putInteropImageOnTitle(typeD);
 		// initTypeSearchInterop();
 		// startSearchInterop(0, 30);
