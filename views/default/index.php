@@ -16,15 +16,9 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->get
 
 
 
-if( $this->layout != "//layouts/empty"){
+
 	$layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
 	$this->renderPartial($layoutPath.'header',array("page"=>"interop","layoutPath"=>$layoutPath));
-}
-
-var_dump(Yii::app()->params["module"]);
-
-echo Yii::app()->getModule( Interop::MODULE )->assetsUrl.'/js/interop.js' ;
-
 ?>
 
 <div id="container-result-interop_search" class="container-result-search col-xs-12 bg-white">
@@ -35,6 +29,11 @@ echo Yii::app()->getModule( Interop::MODULE )->assetsUrl.'/js/interop.js' ;
 			<img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo-wikidata.png'> 
 			<span class="hidden-xs">Wikidata</span>
 		</button><br class="hidden-xs">
+		<br class="hidden-xs">
+		<button id="btn-pole-emploi" class="btn text-blue btn-directory-type" data-type="poleEmploi">
+            <img width=50 src='<?php echo $this->module->assetsUrl; ?>/images/logos/logo_pole_emploi.png'> 
+            <span class="hidden-xs">Pôle emploi</span>
+        </button><br class="hidden-xs">
 	</div> 
 	<div id="dropdown_search" class="col-md-8 col-sm-8 col-xs-10 padding-10"></div>
 </div>
@@ -45,6 +44,7 @@ jQuery(document).ready(function() {
 	$(".btn-directory-type").click(function(){
 		mylog.log('.btn-directory-type', $(this).data("type") );
 		var type = $(this).data("type");
+		interop.currentType = [type];
 		interop.startSearch(0,30);
 		// putInteropImageOnTitle(typeD);
 		// initTypeSearchInterop();

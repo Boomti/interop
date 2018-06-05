@@ -3,6 +3,8 @@ var interop = {
 	textSearch : "",
 	urlSearch : [],
 	all_interop_data : [],
+	indexMin : 0,
+	indexMax : 30,
 	initVar : function () {
 		interop.currentType = [];
 		interop.textSearch = "";
@@ -15,20 +17,10 @@ var interop = {
 		}
 		//indexStep = 30;
 		interop.textSearch = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-		// currentIndexMin = indexMin;
-		// currentIndexMax = indexMax;  
-
+		interop.indexMin = indexMin;
+		interop.indexMax = indexMax;  
 		interop.getUrlForInteropResearch(indexMin, indexMax);
-		
 
-		// if (all_interop_url.length > 0 ) {
-		// 	interop.all_interop_data = [];
-		// 	$.each(all_interop_url,function(index, value) {
-		// 		getInteropResults(value);
-		// 	});
-		// } else {
-		// 	getInteropResults(url_interop);
-		// }
 	},
 	getUrlForInteropResearch : function(indexMin, indexMax) {
 		mylog.log("getUrlForInteropResearch", indexMin, indexMax);
@@ -68,19 +60,42 @@ var interop = {
 		$.each(interop.currentType,function(k,valType){
 			mylog.log("valType", valType);
 			var objType = interopObj[valType];
-			var url = objType.getUrlApi(city_wikidataID, interop.textSearch);
+
+
+			var city_data = interop.getCityDataById(city_id, type_zone, objType.cityFields);
+			// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
+			// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
+			var paramsUrl = interop.getParamsForUrl(objType.paramsUrl, city_data);
+
+			var url = objType.getUrlApi(paramsUrl);
 			mylog.log("url", url);
 			interop.getResults(url,objType);
 		});
 
 
 	},
-	getCityDataById : function(id, type=null) {
+	getParamsForUrl : function(oT, cD) {
+		mylog.log("getParamsForUrl", oT, cD);
+		var params = {};
+		mylog.log("oT.cityFields", oT.cityFields);
+		$.each(oT.cityFields, function(index, value) {
+			params[value] = cD[value];
+		});
+		mylog.log("params", params);
+		mylog.log("oT.others", oT.others);
+		$.each(oT.others, function(index, value) {
+			params[value] = interop[value];
+		});
+		mylog.log("params", params);
+		return params;
+	},
+	getCityDataById : function(id, type=null, fields=[]) {
 		$.ajax({
 			type: "GET",
-			url: baseUrl + "/co2/interoperability/get/type/"+type+"/id/"+id,
+			url: baseUrl + "/co2/interoperability/get/type/"+type+"/id/"+id+"/fields/"+fields.toString(),
 			async: false,
-			success: function(data){ mylog.log("succes get CityDataById", data); //mylog.dir(data);
+			success: function(data){ 
+				mylog.log("succes get CityDataById", data); //mylog.dir(data);
 				if ((Object.keys(data).length) <= 1) {
 					$.each(data, function(index, value) {
 						city_data = value;
@@ -113,9 +128,9 @@ var interop = {
 	    $(".btn-start-search").removeClass("bg-dark");
 	    
 	    if(indexMin > 0)
-	    $("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
+	    	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
 	    else
-	    $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
+	    	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	      
 	    if(isMapEnd) {
 	      $.blockUI({message : "<h1 class='homestead text-red'><i class='fa fa-spin fa-circle-o-notch'></i> Commune<span class='text-dark'>xion en cours ...</span></h1>"});
@@ -133,9 +148,9 @@ var interop = {
                 // $('#dropdown_search').append("<br/><div><h1>Something went wrong during this research ... </h1></div>");   
                 $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'></i> Something went wrong during this research ...</span></center>");
 	        },
-	        success: function(data){ mylog.log("success autocomplete INTEROP search", data); 
+	        success: function(data){ 
+	        	mylog.log("success autocomplete INTEROP search", data); 
 	        	toastr.success("Une partie des données est arrivé");
-
 	            all_data_for_map = [];
 	            var part_data = [];
 	            if (data.length > 0) {
@@ -217,8 +232,10 @@ var interop = {
 		                searchCallback();
 		            }
 
-		            if(mapElements.length==0) mapElements = part_data;
-		            else $.extend(mapElements, part_data);   
+		            if(mapElements.length==0) 
+		            	mapElements = part_data;
+		            else 
+		            	$.extend(mapElements, part_data);   
 
 
 
@@ -230,7 +247,8 @@ var interop = {
                     if(indexMin == 0){
                         //ajout du footer   
                         var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-                        if(name == "" && locality == "") msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
+                        // if(name == "" && locality == "") 
+                        // 	msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
                         str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
                         str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
                         str += "</div>";
