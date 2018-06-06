@@ -20,7 +20,7 @@ var interopObj = {
     	color : "grey",
     	icon : "group",
     	type : "wiki",
-        urlImg : moduleUrl +"/images/logos/logo-wikidata.png",
+        urlImg : modules.interop.assets +"/images/logos/logo-wikidata.png",
         paramsUrl : {
         	cityFields : ["wikidataID"],
         	others : ["textSearch"]
@@ -33,11 +33,11 @@ var interopObj = {
         }
     },
     poleEmploi : {
-    	name : "Pole Emploie",
+    	name : "Pole Emploi",
     	color : "grey",
     	icon : "group",
-    	type : "poleEmploie",
-        urlImg : moduleUrl +"/images/logos/logo_pole_emploi.png",
+    	type : "poleEmploi",
+        urlImg : modules.interop.assets +"/images/logos/logo_pole_emploi.png",
         paramsUrl : {
         	cityFields : ["insee"],
         	others : ["indexMax"]
@@ -47,6 +47,10 @@ var interopObj = {
             // if (text !== "")
             //     url += "&text_filter="+text;
             return url;
+        },
+        startSearch : function(){
+            interop.currentType = ["poleEmploi"]
+            interop.startSearch(0, 30);
         }
     }
 };
