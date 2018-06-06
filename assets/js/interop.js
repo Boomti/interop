@@ -12,15 +12,20 @@ var interop = {
 	},
 	startSearch : function(indexMin, indexMax) {
 		mylog.log("startSearchInterop", indexMin, indexMax);
-		if (interop.currentType == "") {
-			interop.currentType = ["wikidata"];
+		if(notNull(myScopes.countActive) && myScopes.countActive > 0) {
+			
+			if (interop.currentType == "") {
+				interop.currentType = ["wikidata"];
+			}
+			//indexStep = 30;
+			interop.textSearch = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
+			interop.indexMin = indexMin;
+			interop.indexMax = indexMax;  
+			interop.getUrlForInteropResearch(indexMin, indexMax);
+		}else{
+			$("#dropdown_search").html("<center><span class='search-loaderr text-red' style='font-size:20px;'>Selectionner au moins un lieu </span></center>");
+			showWhere(true);
 		}
-		//indexStep = 30;
-		interop.textSearch = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-		interop.indexMin = indexMin;
-		interop.indexMax = indexMax;  
-		interop.getUrlForInteropResearch(indexMin, indexMax);
-
 	},
 	getUrlForInteropResearch : function(indexMin, indexMax) {
 		mylog.log("getUrlForInteropResearch", indexMin, indexMax);
@@ -115,12 +120,12 @@ var interop = {
 
     	mylog.log("getInteropResults : ", url_interop);
 
-	    loadingData = true;
+	    //loadingData = true;
 	    
-	    str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
-	    $(".btn-start-search").html(str);
-	    $(".btn-start-search").addClass("bg-azure");
-	    $(".btn-start-search").removeClass("bg-dark");
+	    // str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
+	    // $(".btn-start-search").html(str);
+	    // $(".btn-start-search").addClass("bg-azure");
+	    // $(".btn-start-search").removeClass("bg-dark");
 	    
 	    if(indexMin > 0)
 	    	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
@@ -139,7 +144,7 @@ var interop = {
 	            mylog.log("error autocomplete INTEROP search"); 
                 mylog.dir(data);     
 	            //signal que le chargement est terminé
-	            loadingData = false;  
+	            //loadingData = false;  
                 // $('#dropdown_search').append("<br/><div><h1>Something went wrong during this research ... </h1></div>");   
                 $("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'></i> Something went wrong during this research ...</span></center>");
 	        },
