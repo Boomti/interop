@@ -77,16 +77,12 @@ var interop = {
 	getParamsForUrl : function(oT, cD) {
 		mylog.log("getParamsForUrl", oT, cD);
 		var params = {};
-		mylog.log("oT.cityFields", oT.cityFields);
 		$.each(oT.cityFields, function(index, value) {
 			params[value] = cD[value];
 		});
-		mylog.log("params", params);
-		mylog.log("oT.others", oT.others);
 		$.each(oT.others, function(index, value) {
 			params[value] = interop[value];
 		});
-		mylog.log("params", params);
 		return params;
 	},
 	getCityDataById : function(id, type=null, fields=[]) {
@@ -106,7 +102,6 @@ var interop = {
 				}
 			}
 		});
-
 		return city_data;
 	},
 	getResults : function(url_interop, objType) {
