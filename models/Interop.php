@@ -8,8 +8,6 @@ class Interop {
 	
 	//TODO Translate
 	
-	
-	
 
 	//From Post/Form name to database field name
 	// public static $dataBinding = array (

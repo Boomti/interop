@@ -19,16 +19,16 @@ var interop = {
 			}
 			//indexStep = 30;
 			interop.textSearch = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
-			interop.indexMin = indexMin;
-			interop.indexMax = indexMax;  
-			interop.getUrlForInteropResearch(indexMin, indexMax);
+			interop.indexMin = (notNull(indexMin) ? indexMin : 0);
+			interop.indexMax = (notNull(indexMax) ? indexMax : 0);  
+			interop.getUrlForInteropResearch();
 		}else{
 			$("#dropdown_search").html("<center><span class='search-loaderr text-red' style='font-size:20px;'>Selectionner au moins un lieu </span></center>");
 			showWhere(true);
 		}
 	},
-	getUrlForInteropResearch : function(indexMin, indexMax) {
-		mylog.log("getUrlForInteropResearch", indexMin, indexMax);
+	getUrlForInteropResearch : function() {
+		mylog.log("getUrlForInteropResearch");
 		// var all_interop_url = [];
 		// var url_interop = "";
 		interop.urlSearch = [];
@@ -47,7 +47,7 @@ var interop = {
 		var city_data = interop.getCityDataById(city_id, type_zone);
 		// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
 		// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
-		var city_wikidataID = city_data.wikidataID;
+		
 		// var city_insee = city_data.insee;
 
 		// if (searchTags !== "") {
@@ -59,7 +59,6 @@ var interop = {
 		// 	var amenity_filter = null;
 		// 	var rome_letters = null;
 		// }
-		mylog.log("city_wikidataID", city_wikidataID);
 		mylog.log("interop.textSearch", interop.textSearch);
 
 		$.each(interop.currentType,function(k,valType){
