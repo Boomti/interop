@@ -40,8 +40,7 @@ var interopObj = {
             return url;
         },
         startSearch : function(){
-        	mylog.log("btn-select-source startSearch");
-            interop.currentType = ["poleEmploi"]
+        	interop.currentType = ["poleEmploi"]
             interop.startSearch(0, 30);
         }
     }
