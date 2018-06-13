@@ -159,24 +159,29 @@ var interop = {
 	            	mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
 	            	var str = "";
 	            	var city, postalCode = "";
+	            	searchObject.indexMin = interop.indexMin;
+	            	searchObject.countType = interop.currentType;
+	            	searchObject.types = interop.currentType;
+	            	searchAllEngine.searchCount[objType.type] = countData ;
 
+	            	$(".headerSearchContainer").html( directory.headerHtml() );
 
-	            	str += '<div class="col-md-12 text-left" id="nb_results_search">';
-	                str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
-	                        "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
-	                str += "<small>";
+	            	// str += '<div class="col-md-12 text-left" id="nb_results_search">';
+	             //    str += "<h4 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+
+	             //            "<i class='fa fa-angle-down'></i> " + totalData + " résultats ";
+	             //    str += "<small>";
 
-	                if(typeof headerParams != "undefined"){
+	                // if(typeof headerParams != "undefined"){
 	                    
-	                    str += "<span class='text-"+objType.color+"'>"+
-	                                "<i class='fa fa-"+objType.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+objType.name+"</span>"+
-	                              "</span> ";
-	                }
+	                //     str += "<span class='text-"+objType.color+"'>"+
+	                //                 "<i class='fa fa-"+objType.icon+" hidden-sm hidden-md hidden-lg padding-5'></i> <span class='hidden-xs'>"+objType.name+"</span>"+
+	                //               "</span> ";
+	                // }
 
-	                str += "</small>";
-	                str += "</h4>";
-	                str += "<hr style='float:left; width:100%;'/>";
-	                str += "</div>";
+	                // str += "</small>";
+	                // str += "</h4>";
+	                // str += "<hr style='float:left; width:100%;'/>";
+	                // str += "</div>";
 
 	                $.each(part_data,function(index,value) {
 		                interop.all_interop_data.push(value);
@@ -185,11 +190,13 @@ var interop = {
 
 
 	                //ajout du footer      	
-                    str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
-                    str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
-                    //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
-                    str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
-                    str += "</div>";
+                    // str += '<div class="pull-left col-md-12 text-center" id="footerDropdown" style="width:100%;">';
+                    // str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>" + totalData + " résultats</h3>";
+                    // //str += '<span class="" id="">Complétez votre recherche pour un résultat plus précis</span></center><br/>';
+                    // str += '<button class="btn btn-default" id="btnShowMoreResult"><i class="fa fa-angle-down"></i> Afficher plus de résultat</div></center>';
+                    // str += "</div>";
+
+                   	$(".footerSearchContainer").html( directory.footerHtml() );
 
                     //si on n'est pas sur une première recherche (chargement de la suite des résultat)
                     if(indexMin > 0){

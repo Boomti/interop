@@ -2,19 +2,6 @@
 CO.js
 ********************* */
 var interopObj = {
-    // interop : {
-    //   name : "interop",
-    //   color : "grey",
-    //   icon : "group",
-    //   type : "interop",
-    //     urlImg : moduleUrl +"/images/logos/logo-wikidata.png",
-    //     getUrlApi : function(wikidataID, text){
-    //         var url = baseUrl + "/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+wikidataID+".json";
-    //         if (text !== "")
-    //             url += "&text_filter="+text;
-    //         return url;
-    //     }
-    // },
     wikidata : {
     	name : "Wikidata",
     	color : "grey",
@@ -55,23 +42,28 @@ var interopObj = {
     }
 };
 
-typeObj.interop = {
-	col:"interop", 
-	ctrl:"interop", 
-	icon : "group", 
-	titleClass : "bg-green",
-	color:"green",
-	bgClass : "bgOrga"
-} ;
+function initRangeInterop(){
+	$.each(interopObj, function(key, value){
+		searchObject.ranges[key] = { indexMin : 0, indexMax : 30, waiting : 30 }
+	});
+}
 
-lazyLoad( moduleUrl+'/js/default/search.js', null, function(){
+function initHeaderParams(){
+	$.each(interopObj, function(key, value){
+		headerParams[key] = { color: value.color, icon: value.icon, name: value.name }
+	});
+}
 
-	searchAllEngine.initRanges();
-	searchObject.ranges.interop = { indexMin : 0, indexMax : 30, waiting : 30 };
-	// searchObject.ranges.wikidata = { indexMin : 0, indexMax : 30, waiting : 30 };
-	// searchObject.ranges.poleEmploi = { indexMin : 0, indexMax : 30, waiting : 30 };
-});
+initHeaderParams();
 
+// typeObj.interop = {
+// 	col:"interop", 
+// 	ctrl:"interop", 
+// 	icon : "group", 
+// 	titleClass : "bg-green",
+// 	color:"green",
+// 	bgClass : "bgOrga"
+// } ;
 
 
 directory.interopPanelHtml = function(params, objType) {
@@ -101,7 +93,6 @@ directory.interopPanelHtml = function(params, objType) {
 		
 	}
 	params.tagsLbl = thisTags;
-	//params.tags.push(objType.type);
 
 	str = "";  
 	str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+"'>"+
@@ -135,10 +126,18 @@ directory.interopPanelHtml = function(params, objType) {
 	return str;
 };
 
+if(typeof searchObject == "undefined"){
+	lazyLoad( moduleUrl+'/js/default/search.js', null, function(){
+		searchAllEngine.initRanges();
+		initRangeInterop();
+		
+	});
+}else if(typeof searchObject.ranges == "undefined"){
+	searchAllEngine.initRanges();
+	initRangeInterop();
+}else if( typeof searchObject.ranges.interop == "undefined" ){
+	initRangeInterop();
+}
 
-lazyLoad( moduleUrl+'/js/default/search.js', null, function(){
 
-	searchObject.ranges.wikidata = { indexMin : 0, indexMax : 30, waiting : 30 };
-	searchObject.ranges.poleEmploi = { indexMin : 0, indexMax : 30, waiting : 30 };
 
-});
