@@ -118,6 +118,7 @@ var interop = {
 		var endNow = 30;
 
     	mylog.log("getInteropResults : ", url_interop);
+    	var data=constructSearchObjectAndGetParams();
 
 	    //loadingData = true;
 	    

@@ -29,6 +29,10 @@ var interopObj = {
         	cityFields : ["insee"],
         	others : ["indexMax"]
         },
+        getUrlElement : function(params){
+            var url = "https://candidat.pole-emploi.fr/offres/recherche/detail/"+params.id;
+            return url;
+        },
         getUrlApi : function(params){
             var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+params.insee+"%27%20LIMIT%20"+params.indexMax;
             // if (text !== "")
@@ -36,6 +40,7 @@ var interopObj = {
             return url;
         },
         startSearch : function(){
+        	mylog.log("btn-select-source startSearch");
             interop.currentType = ["poleEmploi"]
             interop.startSearch(0, 30);
         }
@@ -54,7 +59,17 @@ function initHeaderParams(){
 	});
 }
 
+
+
+function initTypeObj(){
+	$.each(interopObj, function(key, value){
+		typeObj[key] = { col: key, ctrl: key, color: value.color, icon: value.icon, sameAs:key }
+	});
+}
+
 initHeaderParams();
+initTypeObj();
+// typeObj[typeObj[addType].sameAs].ctrl
 
 // typeObj.interop = {
 // 	col:"interop", 
@@ -72,7 +87,7 @@ directory.interopPanelHtml = function(params, objType) {
 
 	// TODO Revoir cette parti des hash ans TRANSLATE
 	//params.hash = getUrlForInteropDirectoryElements(objType.type, params.shortDescription, params.url);
-	params.hash = params.url;
+	params.hash = objType.getUrlElement(params);
 	params.url = params.hash;
 
 	params.type = "poi.interop."+objType.type;
