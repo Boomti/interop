@@ -59,7 +59,6 @@ function initHeaderParams(){
 }
 
 
-
 function initTypeObj(){
 	$.each(interopObj, function(key, value){
 		typeObj[key] = { col: key, ctrl: key, color: value.color, icon: value.icon, sameAs:key }
