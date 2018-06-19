@@ -30,7 +30,7 @@ var interopObj = {
         	others : ["indexMax"]
         },
         getUrlElement : function(params){
-            var url = "https://candidat.pole-emploi.fr/offres/recherche/detail/"+params.id;
+            var url = params.url
             return url;
         },
         getUrlApi : function(params){
@@ -119,12 +119,12 @@ directory.interopPanelHtml = function(params, objType) {
 	params.tagsLbl = thisTags;
 
 	str = "";  
-	str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 searchEntityContainer "+params.type+"'>"+
+	str += "<div class='col-lg-4 col-md-6 col-sm-8 col-xs-12 "+params.type+"' style='min-height: 170px; max-height: 170px; margin-bottom: 25px;'>"+
 				"<div class='searchEntity' id='entity"+params.id+"'>"+
 					"<div class='contentMin'>"+
 						"<div class='padding-10 informations'>"+
 							"<div class='entityRight no-padding'>"+
-								"<a  href='"+params.hash+"' class='"+params.size+" entityName text-dark lbhp add2fav' "+
+								"<a  href='"+params.hash+"' target='_blank' class='"+params.size+" entityName text-dark lbhp add2fav' "+
 									"data-modalshow='"+params.id+"'>"+
 									'<span class="col-xs-2 text-center">'+
 										"<img width=40 src='"+objType.urlImg+"'>" +
@@ -132,14 +132,20 @@ directory.interopPanelHtml = function(params, objType) {
     								'<span class="col-xs-10">' + params.name + '</span>'+
 								"</a>";
 								if(typeof params.address != "undefined"){
-									str += "<a href='"+params.hash+"' data-id='" + params.dataId + "' "+
+									str += "<a href='"+params.hash+"'  target='_blank' data-id='" + params.dataId + "' "+
 												"class='entityLocality lbhp add2fav'  data-modalshow='"+params.id+"'>"+
 												"<i class='fa fa-home'></i> " + params.address.postalCode + ", " + 
 												params.address.addressLocality +
 											"</a>";
 								}
 								else str += "<br/>";
-						str += "<div class='entityDescription'>" + params.shortDescription + "</div>";
+						//str += "<div class='entityDescription'>" + params.shortDescription + "</div>";
+						if(typeof params.shortDescription != "undefined" && params.shortDescription != "" && params.shortDescription != null)
+							str += "<br><span class='entityDescription'>"+params.shortDescription+"</span>";
+						else if(typeof params.description != "undefined" && params.description != "" && params.description != null){
+							str += "<br><span class='entityDescription'>"+
+								( (params.description.length > 140) ? params.description.substring(0,140)+"..." : params.description )+"</span>";
+						}
 						str += "<div class='tagsContainer text-red'>"+params.tagsLbl+"</div>";
 					str += "</div>";
 				str += "</div>";
