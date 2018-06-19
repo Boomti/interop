@@ -11,8 +11,8 @@ var interop = {
 		interop.urlSearch = [];
 	},
 	startSearch : function(indexMin, indexMax) {
-		mylog.log("startSearchInterop", indexMin, indexMax);
-		if(notNull(myScopes.countActive) && myScopes.countActive > 0) {
+		mylog.log("startSearchInterop", indexMin, indexMax, interop.currentType, myScopes.countActive);
+		// if(notNull(myScopes.countActive) && myScopes.countActive > 0) {
 			
 			if (interop.currentType == "") {
 				interop.currentType = ["wikidata"];
@@ -20,19 +20,19 @@ var interop = {
 			//indexStep = 30;
 			interop.textSearch = ($('#main-search-bar').length>0) ? $('#main-search-bar').val() : "";
 			interop.indexMin = (notNull(indexMin) ? indexMin : 0);
-			interop.indexMax = (notNull(indexMax) ? indexMax : 0);  
+			interop.indexMax = (notNull(indexMax) ? indexMax : 30);  
 			interop.getUrlForInteropResearch();
-		}else{
-			$("#dropdown_search").html("<center><span class='search-loaderr text-red' style='font-size:20px;'>Selectionner au moins un lieu </span></center>");
-			showWhere(true);
-		}
+		// }else{
+		// 	$("#dropdown_search").html("<center><span class='search-loaderr text-red' style='font-size:20px;'>Selectionner au moins un lieu </span></center>");
+		// 	showWhere(true);
+		// }
 	},
 	getUrlForInteropResearch : function() {
 		mylog.log("getUrlForInteropResearch");
 		// var all_interop_url = [];
 		// var url_interop = "";
 		interop.urlSearch = [];
-
+		var city_id = null ;
 		if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
 			mylog.log("here", myScopes.type);
 			$.each(myScopes[myScopes.type],function(e,v){
@@ -43,8 +43,9 @@ var interop = {
 				}
 			});
 		}
-
-		var city_data = interop.getCityDataById(city_id, type_zone);
+		var city_data = null;
+		if(city_id != null)
+			city_data = interop.getCityDataById(city_id, type_zone);
 		// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
 		// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
 		
@@ -59,17 +60,22 @@ var interop = {
 		// 	var amenity_filter = null;
 		// 	var rome_letters = null;
 		// }
+		
 		mylog.log("interop.textSearch", interop.textSearch);
 
 		$.each(interop.currentType,function(k,valType){
 			mylog.log("valType", valType);
 			var objType = interopObj[valType];
 
-
-			var city_data = interop.getCityDataById(city_id, type_zone, objType.cityFields);
+			var city_data = null;
+			var paramsUrl = null;
+			if(city_id != null){
+				city_data = interop.getCityDataById(city_id, type_zone, objType.cityFields);
+				paramsUrl = interop.getParamsForUrl(objType.paramsUrl, city_data);
+			}
 			// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
 			// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
-			var paramsUrl = interop.getParamsForUrl(objType.paramsUrl, city_data);
+			
 
 			var url = objType.getUrlApi(paramsUrl);
 			mylog.log("url", url);
@@ -139,6 +145,7 @@ var interop = {
     	$.ajax({
 	        type: "POST",
 	        url: url_interop,
+	        data : ( typeof objType.getParamsUrl() != "undefined" ? objType.getParamsUrl() : {} ),
 	        dataType: "json",
 	        error: function (data){
 	            mylog.log("error autocomplete INTEROP search"); 

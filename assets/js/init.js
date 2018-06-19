@@ -34,10 +34,21 @@ var interopObj = {
             return url;
         },
         getUrlApi : function(params){
-            var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+params.insee+"%27%20LIMIT%20"+params.indexMax;
+            //var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+params.insee+"%27%20LIMIT%20"+params.indexMax;
+            var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres";
             // if (text !== "")
             //     url += "&text_filter="+text;
             return url;
+        },
+        getParamsUrl : function(){
+        	var data = {
+        		'technicalParameters'  : {
+        			'page' : 1,
+					'per_page' : 20,
+					'sort' : 1
+        		}
+        	}
+            return data ;
         },
         startSearch : function(){
         	interop.currentType = ["poleEmploi"]
