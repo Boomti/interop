@@ -2,72 +2,75 @@
 CO.js
 ********************* */
 var interopObj = {
-    wikidata : {
-    	name : "Wikidata",
-    	color : "grey",
-    	icon : "group",
-    	type : "wiki",
-        urlImg : modules.interop.assets +"/images/logos/logo-wikidata.png",
-        paramsUrl : {
-        	cityFields : ["wikidataID"],
-        	others : ["textSearch"]
-        },
-        getUrlApi : function(params){
-            var url = baseUrl + "/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+params.wikidataID+".json";
-            if (params.textSearch !== "")
-                url += "&text_filter="+params.textSearch;
-            return url;
-        }
-    },
-    poleEmploi : {
-    	name : "Pole Emploi",
-    	color : "grey",
-    	icon : "group",
-    	type : "poleEmploi",
-        urlImg : modules.interop.assets +"/images/logos/logo_pole_emploi.png",
-        paramsUrl : {
-        	cityFields : ["insee"],
-        	others : ["indexMax"]
-        },
-        getUrlElement : function(params){
-            var url = params.url
-            return url;
-        },
-        getUrlApi : function(params){
-            //var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/infotravail/v1/datastore_search_sql?sql=SELECT%20%2A%20FROM%20%22421692f5%2Df342%2D4223%2D9c51%2D72a27dcaf51e%22%20WHERE%20%22CITY_CODE%22=%27"+params.insee+"%27%20LIMIT%20"+params.indexMax;
-            var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres";
-            // if (text !== "")
-            //     url += "&text_filter="+text;
-            return url;
-        },
-        getParamsUrl : function(objType){
-        	var data = {
-        		'technicalParameters'  : {
-        			'page' : 1,
-					'per_page' : 20,
+	wikidata : {
+		name : "Wikidata",
+		color : "grey",
+		icon : "group",
+		type : "wiki",
+		urlImg : modules.interop.assets +"/images/logos/logo-wikidata.png",
+		paramsUrl : {
+			cityFields : ["wikidataID"],
+			others : ["textSearch"]
+		},
+		getUrlApi : function(params){
+			var url = baseUrl + "/api/convert/wikipedia?url=https://www.wikidata.org/wiki/Special:EntityData/"+params.wikidataID+".json";
+			if (params.textSearch !== "")
+				url += "&text_filter="+params.textSearch;
+			return url;
+		}
+	},
+	poleEmploi : {
+		name : "Pole Emploi",
+		color : "grey",
+		icon : "group",
+		type : "poleEmploi",
+		urlImg : modules.interop.assets +"/images/logos/logo_pole_emploi.png",
+		paramsUrl : {
+			cityFields : ["insee"],
+			others : ["indexMax"]
+		},
+		getUrlElement : function(params){
+			var url = params.url
+			return url;
+		},
+		getUrlApi : function(params){
+			var url = baseUrl + "/api/convert/poleemploi?url=https://api.emploi-store.fr/partenaire/offresdemploi/v1/rechercheroffres";
+			return url;
+		},
+		getParamsUrl : function(objType){
+			var data = {
+				'technicalParameters'  : {
+					'page' : 1,
+					'per_page' : 30,
 					'sort' : 1
-        		}
-        	}
-        	listScope = interop.getScope();
+				},
+				'criterias' : {}
+			} ;
 
-        	mylog.log("paramsUrl", paramsUrl);
+			listScope = interop.getScope();
 
-        	if(typeof listScope[0].id)
-        	dataCities = interop.getCityDataById(listScope[0].id, listScope[0].type, objType.paramsUrl.cityFields);
-            
-        	if(typeof dataCities.insee != "undefined"){
-        		data["criterias"] = {
-        			cityCode : dataCities.insee
-        		}
-        	}
+			mylog.log("listScope", listScope);
+			var dataCities = null ;
+			$.each(listScope,function(e,v){
+				dataCities = interop.getCityDataById(v.id, v.type, objType.paramsUrl.cityFields);
+			});
 
-            return data ;
-        },
-        startSearch : function(){
-        	interop.currentType = ["poleEmploi"]
-            interop.startSearch(0, 30);
-        }
-    }
+			if(dataCities != null && typeof dataCities.insee != "undefined" )
+				data["criterias"]["cityCode"] = dataCities.insee;
+			
+			if(typeof searchObject != "undefined" && searchObject.text != "")
+				data["criterias"]["keywords"] = searchObject.text;
+			
+			if(typeof searchObject != "undefined" && searchObject.subType != "" && typeof modules.jobs.categories.subcat[searchObject.subType] != "undefined")
+				data["criterias"]["largeAreaCode"] = modules.jobs.categories.subcat[searchObject.subType].poleEmploiKey;
+				
+			return data ;
+		},
+		startSearch : function(){
+			interop.currentType = ["poleEmploi"]
+			interop.startSearch(0, 30);
+		}
+	}
 };
 
 function initRangeInterop(){

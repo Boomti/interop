@@ -90,7 +90,7 @@ var interop = {
 			// }
 			// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
 			// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
-			var paramsUrl = ( typeof objType.getParamsUrl() != "undefined" ? objType.getParamsUrl() : {} )
+			var paramsUrl = ( typeof objType.getParamsUrl(objType) != "undefined" ? objType.getParamsUrl(objType) : {} )
 			var url = objType.getUrlApi(paramsUrl);
 			mylog.log("url", url);
 			interop.getResults(url,objType, paramsUrl);
