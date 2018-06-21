@@ -40,7 +40,7 @@ var interopObj = {
             //     url += "&text_filter="+text;
             return url;
         },
-        getParamsUrl : function(){
+        getParamsUrl : function(objType){
         	var data = {
         		'technicalParameters'  : {
         			'page' : 1,
@@ -48,6 +48,19 @@ var interopObj = {
 					'sort' : 1
         		}
         	}
+        	listScope = interop.getScope();
+
+        	mylog.log("paramsUrl", paramsUrl);
+
+        	if(typeof listScope[0].id)
+        	dataCities = interop.getCityDataById(listScope[0].id, listScope[0].type, objType.paramsUrl.cityFields);
+            
+        	if(typeof dataCities.insee != "undefined"){
+        		data["criterias"] = {
+        			cityCode : dataCities.insee
+        		}
+        	}
+
             return data ;
         },
         startSearch : function(){

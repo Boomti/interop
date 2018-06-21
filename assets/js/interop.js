@@ -27,25 +27,40 @@ var interop = {
 		// 	showWhere(true);
 		// }
 	},
-	getUrlForInteropResearch : function() {
-		mylog.log("getUrlForInteropResearch");
-		// var all_interop_url = [];
-		// var url_interop = "";
-		interop.urlSearch = [];
-		var city_id = null ;
+	getScope : function(){
+		var listScopeActive = {};
 		if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
 			mylog.log("here", myScopes.type);
 			$.each(myScopes[myScopes.type],function(e,v){
 				if(myScopes[myScopes.type][e].active == true){
 					// scopeActive[e] = myScopes[myScopes.type][e] ;
-					city_id = myScopes[myScopes.type][e].id ;
-					type_zone = myScopes[myScopes.type][e].type ;
+					// city_id = myScopes[myScopes.type][e].id ;
+					// type_zone = myScopes[myScopes.type][e].type ;
+					listScopeActive[e] = myScopes[myScopes.type][e];
 				}
 			});
 		}
-		var city_data = null;
-		if(city_id != null)
-			city_data = interop.getCityDataById(city_id, type_zone);
+		return listScopeActive;
+	},
+	getUrlForInteropResearch : function() {
+		mylog.log("getUrlForInteropResearch");
+		// var all_interop_url = [];
+		// var url_interop = "";
+		interop.urlSearch = [];
+		// var city_id = null ;
+		// if( notNull(myScopes.type) && notNull(myScopes[myScopes.type]) ) {
+		// 	mylog.log("here", myScopes.type);
+		// 	$.each(myScopes[myScopes.type],function(e,v){
+		// 		if(myScopes[myScopes.type][e].active == true){
+		// 			// scopeActive[e] = myScopes[myScopes.type][e] ;
+		// 			city_id = myScopes[myScopes.type][e].id ;
+		// 			type_zone = myScopes[myScopes.type][e].type ;
+		// 		}
+		// 	});
+		// }
+		// var city_data = null;
+		// if(city_id != null)
+		// 	city_data = interop.getCityDataById(city_id, type_zone);
 		// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
 		// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
 		
@@ -67,19 +82,18 @@ var interop = {
 			mylog.log("valType", valType);
 			var objType = interopObj[valType];
 
-			var city_data = null;
-			var paramsUrl = null;
-			if(city_id != null){
-				city_data = interop.getCityDataById(city_id, type_zone, objType.cityFields);
-				paramsUrl = interop.getParamsForUrl(objType.paramsUrl, city_data);
-			}
+			// var city_data = null;
+			// var paramsUrl = null;
+			// if(city_id != null){
+			// 	city_data = interop.getCityDataById(city_id, type_zone, objType.paramsUrl.cityFields);
+			// 	paramsUrl = interop.getParamsForUrl(objType.paramsUrl, city_data);
+			// }
 			// var geoShape = typeof city_data.geoShape != "undefined" ? getGeoShapeForOsm(city_data.geoShape) : {};
 			// var geofilter = typeof city_data.geoShape != "undefined" ? getGeofilterPolygon(city_data.geoShape) : {};
-			
-
+			var paramsUrl = ( typeof objType.getParamsUrl() != "undefined" ? objType.getParamsUrl() : {} )
 			var url = objType.getUrlApi(paramsUrl);
 			mylog.log("url", url);
-			interop.getResults(url,objType);
+			interop.getResults(url,objType, paramsUrl);
 		});
 
 
@@ -114,7 +128,7 @@ var interop = {
 		});
 		return city_data;
 	},
-	getResults : function(url_interop, objType) {
+	getResults : function(url_interop, objType, paramsUrl) {
 
 
 		var indexMin = 0;
@@ -124,7 +138,7 @@ var interop = {
 		var endNow = 30;
 
     	mylog.log("getInteropResults : ", url_interop);
-    	var data=constructSearchObjectAndGetParams();
+    	var construct=constructSearchObjectAndGetParams();
 
 	    //loadingData = true;
 	    
@@ -145,7 +159,7 @@ var interop = {
     	$.ajax({
 	        type: "POST",
 	        url: url_interop,
-	        data : ( typeof objType.getParamsUrl() != "undefined" ? objType.getParamsUrl() : {} ),
+	        data : paramsUrl,
 	        dataType: "json",
 	        error: function (data){
 	            mylog.log("error autocomplete INTEROP search"); 
