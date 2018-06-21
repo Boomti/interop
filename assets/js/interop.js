@@ -174,10 +174,10 @@ var interop = {
 	        	toastr.success("Une partie des données est arrivé");
 	            all_data_for_map = [];
 	            var part_data = [];
-	            if (data.length > 0) {
-	                part_data = data;
-	                var totalData = data.length;
-	                var countData = data.length;
+	            if (data.elements.length > 0) {
+	                part_data = data.elements;
+	                var totalData = data.count;
+	                var countData = data.count;
 	            	mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
 	            	var str = "";
 	            	var city, postalCode = "";

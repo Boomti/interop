@@ -47,7 +47,7 @@ var interopObj = {
 				'criterias' : {}
 			} ;
 
-			listScope = interop.getScope();
+			var listScope = interop.getScope();
 
 			mylog.log("listScope", listScope);
 			var dataCities = null ;
@@ -63,6 +63,9 @@ var interopObj = {
 			
 			if(typeof searchObject != "undefined" && searchObject.subType != "" && typeof modules.jobs.categories.subcat[searchObject.subType] != "undefined")
 				data["criterias"]["largeAreaCode"] = modules.jobs.categories.subcat[searchObject.subType].poleEmploiKey;
+				
+			if(typeof searchObject != "undefined" && searchObject.priceMin != "")
+				data["criterias"]["minSalary"] = searchObject.priceMin;
 				
 			return data ;
 		},
