@@ -195,6 +195,9 @@ var interop = {
 
 
 	               $(".footerSearchContainer").html( directory.footerHtml() );
+	               initPageTable(searchAllEngine.searchCount[objType.type]);
+	               $(".main-btn-create").addClass("hidden");
+	               
 
                     //si on n'est pas sur une première recherche (chargement de la suite des résultat)
                     if(indexMin > 0){

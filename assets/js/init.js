@@ -69,9 +69,9 @@ var interopObj = {
 				
 			return data ;
 		},
-		startSearch : function(){
+		startSearch : function(indexMin, indexStep){
 			interop.currentType = ["poleEmploi"]
-			interop.startSearch(0, 30);
+			interop.startSearch(indexMin, indexStep);
 		}
 	}
 };
