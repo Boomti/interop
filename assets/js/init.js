@@ -150,7 +150,8 @@ directory.interopPanelHtml = function(params, objType) {
 									'</span>'+
     								'<span class="col-xs-10">' + params.name + '</span>'+
 								"</a>";
-								if(typeof params.address != "undefined"){
+								if(	typeof params.address != "undefined" && 
+									typeof params.address.addressLocality != "undefined"){
 									str += "<a href='"+params.hash+"'  target='_blank' data-id='" + params.dataId + "' "+
 												"class='entityLocality lbhp add2fav'  data-modalshow='"+params.id+"'>"+
 												"<i class='fa fa-home'></i> " + params.address.postalCode + ", " + 
