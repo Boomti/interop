@@ -139,13 +139,6 @@ var interop = {
 
     	mylog.log("getInteropResults : ", url_interop);
     	var construct=constructSearchObjectAndGetParams();
-
-	    //loadingData = true;
-	    
-	    // str = "<i class='fa fa-circle-o-notch fa-spin'></i>";
-	    // $(".btn-start-search").html(str);
-	    // $(".btn-start-search").addClass("bg-azure");
-	    // $(".btn-start-search").removeClass("bg-dark");
 	    
 	    if(indexMin > 0)
 	    	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
@@ -171,21 +164,22 @@ var interop = {
 	        },
 	        success: function(data){ 
 	        	mylog.log("success autocomplete INTEROP search", data); 
-	        	toastr.success("Une partie des données est arrivé");
 	            all_data_for_map = [];
 	            var part_data = [];
-	            if (data.elements.length > 0) {
+
+	            searchObject.indexMin = interop.indexMin;
+            	searchObject.countType = interop.currentType;
+            	searchObject.types = interop.currentType;
+            	searchAllEngine.searchCount[objType.type] = 0 ;
+
+	            if (data.result == true ) {
 	                part_data = data.elements;
 	                var totalData = data.count;
 	                var countData = data.count;
 	            	mylog.log('PART_DATA POUR CHAQUE INTEROP RESEARCH : ', part_data);
 	            	var str = "";
 	            	var city, postalCode = "";
-	            	searchObject.indexMin = interop.indexMin;
-	            	searchObject.countType = interop.currentType;
-	            	searchObject.types = interop.currentType;
 	            	searchAllEngine.searchCount[objType.type] = countData ;
-
 	            	$(".headerSearchContainer").html( directory.headerHtml() );
 
 	            	 $.each(part_data,function(index,value) {
@@ -246,22 +240,21 @@ var interop = {
 
 
 
-	            } else { 
-	            	toastr.error(part_data.content); 
+	            } else {
+	            	$(".headerSearchContainer").html( directory.headerHtml() );
 	            	$.unblockUI();
                     showMap(false);
-                    $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
-                    if(indexMin == 0){
-                        //ajout du footer   
-                        var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
-                        // if(name == "" && locality == "") 
-                        // 	msg = "<h3 class='text-dark padding-20'><i class='fa fa-keyboard-o'></i> Préciser votre recherche pour plus de résultats ...</h3>"; 
-                        str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
-                        str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
-                        str += "</div>";
-                        $("#dropdown_search").html(str);
-                        $("#searchBarText").focus();
-                    } 
+                   // $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
+                    $("#dropdown_search").html("");
+                    $(".footerSearchContainer").html( directory.footerHtml() );
+                    // if(indexMin == 0){
+                    //     var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
+                    //     str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
+                    //     str += "<hr style='float:left; width:100%;'/><h3 style='margin-bottom:10px; margin-left:15px;' class='text-dark'>"+msg+"</h3><br/>";
+                    //     str += "</div>";
+                    //     $("#dropdown_search").html(str);
+                    //     $("#searchBarText").focus();
+                    // } 
 	            }
 	        }
         });
