@@ -77,9 +77,9 @@ var interopObj = {
 };
 
 function initRangeInterop(){
-	$.each(interopObj, function(key, value){
-		searchObject.ranges[key] = { indexMin : 0, indexMax : 30, waiting : 30 }
-	});
+	// $.each(interopObj, function(key, value){
+	// 	searchObject.ranges[key] = { indexMin : 0, indexMax : 30, waiting : 30 }
+	// });
 }
 
 function initHeaderParams(){
@@ -176,18 +176,18 @@ directory.interopPanelHtml = function(params, objType) {
 	return str;
 };
 
-if(typeof searchObject == "undefined"){
-	lazyLoad( moduleUrl+'/js/default/search.js', null, function(){
-		searchAllEngine.initRanges();
-		initRangeInterop();
+// if(typeof searchObject == "undefined"){
+// 	lazyLoad( moduleUrl+'/js/default/search.js', null, function(){
+// 		searchAllEngine.initRanges();
+// 		initRangeInterop();
 		
-	});
-}else if(typeof searchObject.ranges == "undefined"){
-	searchAllEngine.initRanges();
-	initRangeInterop();
-}else if( typeof searchObject.ranges.interop == "undefined" ){
-	initRangeInterop();
-}
+// 	});
+// }else if(typeof searchObject.ranges == "undefined"){
+// 	searchAllEngine.initRanges();
+// 	initRangeInterop();
+// }else if( typeof searchObject.ranges.interop == "undefined" ){
+// 	initRangeInterop();
+// }
 
 
 

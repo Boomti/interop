@@ -140,9 +140,9 @@ var interop = {
     	mylog.log("getInteropResults : ", url_interop);
     	var construct=constructSearchObjectAndGetParams();
 	    
-	    if(indexMin > 0)
-	    	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
-	    else
+	    // if(indexMin > 0)
+	    // 	$("#btnShowMoreResult").html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...");
+	    // else
 	    	$("#dropdown_search").html("<center><span class='search-loaderr text-dark' style='font-size:20px;'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</span></center>");
 	      
 	    if(isMapEnd) {
@@ -186,8 +186,7 @@ var interop = {
 		                interop.all_interop_data.push(value);
 		                str += directory.interopPanelHtml(value, objType);
 		            });
-
-
+	
 	               $(".footerSearchContainer").html( directory.footerHtml() );
 	               initPageTable(searchAllEngine.searchCount[objType.type]);
 	               $(".main-btn-create").addClass("hidden");
@@ -222,12 +221,15 @@ var interop = {
                         } 
                     }
                     
-                    if(countData < 30){
-		                $("#btnShowMoreResult").remove(); 
-		                scrollEnd = true;
-		            }else{
-		                scrollEnd = false;
-		            }
+              //       if(countData < 30){
+		            //     $("#btnShowMoreResult").remove(); 
+		            //     scrollEnd = true;
+		            // }else{
+		            //     scrollEnd = false;
+		            // }
+
+		            $("#btnShowMoreResult").remove(); 
+		            scrollEnd = true;
 
 		            if(typeof searchCallback == "function") {
 		                searchCallback();
@@ -246,7 +248,7 @@ var interop = {
                     showMap(false);
                    // $(".btn-start-search").html("<i class='fa fa-refresh'></i>"); 
                     $("#dropdown_search").html("");
-                    $(".footerSearchContainer").html( directory.footerHtml() );
+                    //$(".footerSearchContainer").html( directory.footerHtml() );
                     // if(indexMin == 0){
                     //     var msg = "<i class='fa fa-ban'></i> "+trad.noresult;    
                     //     str += '<div class="pull-left col-md-12 text-left" id="footerDropdown" style="width:100%;">';
